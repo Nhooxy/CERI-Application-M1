@@ -1,4 +1,7 @@
 #include "callWSListenator.h"
+#include "Communication.h"
+#include "../generated/Bibliotheque.h"
+#include <string.h>
 
 using namespace std;
 using namespace Bibliotheque;
@@ -26,8 +29,12 @@ char *HoroDate() {
     return g_strBuffHD;
 }
 
-SOAP_FMAC5 int SOAP_FMAC6 ns2__jouerChanson(struct soap *, ns1__RequestType *Request, struct ns2__jouerChansonResponse &_param_1) {
-    int status = 0;
+SOAP_FMAC5 int SOAP_FMAC6
 
-    return status;
+ns2__actionProcess(struct soap *, ns1__RequestType *Request, struct ns2__actionProcessResponse &_param_1) {
+    Communication com;
+    _param_1.return_ = new ns1__ResponseType();
+    _param_1.return_->url = com.searchAction(Request->nomCommande);
+
+    return 0;
 }

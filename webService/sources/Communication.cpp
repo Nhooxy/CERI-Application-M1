@@ -4,8 +4,10 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include "../generated/Bibliotheque.h"
 
 using namespace std;
+using namespace Bibliotheque;
 
 /**
  * comme Implémentation de explode PHP.
@@ -41,9 +43,14 @@ string Communication::searchAction(string action) {
 
     for (vector<string>::iterator it = stringTab.begin(); it != stringTab.end(); ++it) {
         if (find(lecture.begin(), lecture.end(), *it) != lecture.end()) {
+            string titre = this->searchMusique("dazzle");
+            Bibliotheque::ManagementPrx manager;
+            manager->streamOnURL("dazzle", "test");
+            // todo ICE appeler streamOnURL de titre et renvoie l'url client que lon return ici
             cout << "jouer" << endl;
         }
         if (find(pause.begin(), pause.end(), *it) != pause.end()) {
+            // todo aucune idée.... (comment faire une pause ? )
             cout << "pause" << endl;
         }
     }
@@ -52,7 +59,7 @@ string Communication::searchAction(string action) {
 }
 
 string Communication::searchMusique(string nom) {
-    return "not Implemented";
+    return nom;
 }
 
 

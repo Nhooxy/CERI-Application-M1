@@ -94,3 +94,5 @@ out
 .nfs*
 /client/.idea/
 /client/intro.mp3
+/WS/cmake-build-debug/
+/WS/generated/*

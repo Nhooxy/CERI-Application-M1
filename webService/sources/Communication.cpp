@@ -35,10 +35,8 @@ int Communication::run(int argc, char *argv[]) {
     Ice::CommunicatorPtr communicator;
     try {
         communicator = Ice::initialize(argc, argv);
-        ManagementPrx object = ManagementPrx::checkedCast(communicator->stringToProxy("BibliothequeAdapter:default -p 10000"));
-        object->streamOnURL("dazzle", "clientID");
-        int i = 0;
-        cin >> i;
+        ManagementPrx object = ManagementPrx::checkedCast(communicator->stringToProxy("SimpleBibliotheque:default -p 10000"));
+        cout << object->streamOnURL("dazzle", "clientID") << endl;
         communicator->destroy();
     }
     catch (const Ice::Exception &ex1) {

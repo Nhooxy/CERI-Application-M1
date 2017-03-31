@@ -18,5 +18,6 @@ int main(int argc, char *argv[]) {
     if (ic) {
         ic->destroy();
     }
+
     return status;
 }

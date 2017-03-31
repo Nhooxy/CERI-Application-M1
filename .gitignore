@@ -94,8 +94,8 @@ out
 .nfs*
 /client/.idea/
 /client/intro.mp3
-/WS/cmake-build-debug/
-/WS/generated/*
+/webService/cmake-build-debug/
+/webService/generated/*
 /client/classes/generated/Bibliotheque/*
 
 mobile/app/FirstAndroidView/\.classpath
@@ -103,4 +103,4 @@ mobile/app/FirstAndroidView/\.classpath
 mobile/app/FirstAndroidView/\.project
 
 serveur/serveurIce\.run
-/WS/WSListenator.run
+/webService/WSListenator.run

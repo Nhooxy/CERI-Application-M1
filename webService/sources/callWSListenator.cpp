@@ -1,6 +1,7 @@
 #include "callWSListenator.h"
 
 using namespace std;
+using namespace Bibliotheque;
 
 /*!
  * Execute la commande envoyé par un client.
@@ -26,6 +27,7 @@ char *HoroDate() {
 }
 
 SOAP_FMAC5 int SOAP_FMAC6 ns2__jouerChanson(struct soap *, ns1__RequestType *Request, struct ns2__jouerChansonResponse &_param_1) {
-    //traitement
-    return 0;
+    int status = 0;
+
+    return status;
 }

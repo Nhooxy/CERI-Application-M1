@@ -23,7 +23,8 @@ WSDLDIR=wsdl
 
 # Options de compilations
 CFLAGS=-g -Wno-deprecated -I /usr/include -I /usr/local/include -D _POSIX_THREADS -std=c++0x -D _REENTRANT
-LDFLAGS=-L /usr/include -pthread
+LDFLAGS=-L /usr/include -pthread -lIce -lIceUtil -lpthread -lvlc
+GENFLAGS=-I $(GENDIR)/.
 OUTPUTICE=--output-dir $(GENDIR)
 
 # Sources
@@ -46,13 +47,13 @@ generate:
 	rm -f $(GENDIR)/soapServerLib.cpp
 	$(SLICE) $(OUTPUTICE) $(ICEDIR)/*.ice
 
-install: generate
+install: generate $(EXEC)
 
 $(EXEC): $(OBJSRC) $(OBJLIB) $(OBJGEN)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(GENDIR)/%.cpp
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(GENFLAGS) $(CFLAGS)
 
 $(OBJDIR)/%.o: $(LIBDIR)/%.cpp
 	$(CC) -o $@ -c $< $(CFLAGS)

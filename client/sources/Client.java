@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.IOException;
+import java.util.UUID;
 
 import Ice.*;
 
@@ -78,14 +79,16 @@ public class Client {
     public static void playFile(Bibliotheque.ManagementPrx manager) {
         String musique;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Entrez le nom du fichier (avec le .mp3) : ");
+        System.out.println("Entrez le nom du fichier : ");
         musique = sc.nextLine();
-        manager.streamOnURL(musique);
+        musique = musique + ".mp3";
+        String client = UUID.randomUUID() + "/";
+        manager.streamOnURL(musique, client);
 
         try {
             System.out.println("Lecture de la musique en stream");
-            System.out.println("http://127.0.0.1:8090/".concat(musique));
-            Sound test = new Sound("http://127.0.0.1:8090/".concat(musique));
+            System.out.println("http://127.0.0.1:8090/".concat(client).concat(musique));
+            Sound test = new Sound("http://127.0.0.1:8090/".concat(client).concat(musique));
             test.play();
         } catch (java.lang.Exception e) {
             e.printStackTrace();

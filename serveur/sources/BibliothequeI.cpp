@@ -61,14 +61,25 @@ sstring BibliothequeI::search(const Ice::Current &) {
  * Methode permettant de stream un flux audio sur l'url local avec le port 8090
  * (127.0.0.1:8090/nomdufichier.mp3)
  */
-void BibliothequeI::streamOnURL(const string &musique, const Ice::Current &) {
+void BibliothequeI::streamOnURL(const string &musique, const string &client, const Ice::Current &) {
     libvlc_instance_t *vlc;
     const char *url;
-    string tmp = "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/" + musique + "}";
+    string tmp =
+            "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/" + client + musique + "}";
     const char *sout = tmp.c_str();
-    const char *media_name = musique.c_str();
+    cout << sout << endl;
+    const char *media_name = (musique).c_str();
 
     vlc = libvlc_new(0, NULL);
-    libvlc_vlm_add_broadcast(vlc, media_name, (MUSIC_DIR + "/" + musique).c_str(), sout, 0, NULL, true, false);
+    libvlc_vlm_add_broadcast(
+            vlc,
+            media_name,
+            (MUSIC_DIR + "/" + musique).c_str(),
+            sout,
+            0,
+            NULL,
+            true,
+            false
+    );
     libvlc_vlm_play_media(vlc, media_name);
 }

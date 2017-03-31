@@ -44,7 +44,7 @@ public:
      * Methode permettant de stream un flux audio sur l'url local avec le port 8090
      * (127.0.0.1:8090/nomdufichier.mp3)
      */
-    void streamOnURL(const string &musique, const Ice::Current &);
+    void streamOnURL(const string &musique, const string &client, const Ice::Current &);
 };
 
 #endif

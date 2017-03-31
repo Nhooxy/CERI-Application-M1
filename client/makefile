@@ -34,7 +34,8 @@ generate: createDir
 	$(SLICE) $(OUTPUTICE) $(ICEDIR)/Bibliotheque.ice
 
 Jexport: generate
-	export CLASSPATH=$CLASSPATH:./classes:./lib/ice-3.6.3.jar:./lib/jl1.0.1.jar
+	echo "si l'export auto ne fonctionne pas, le faire manuellement."
+	export CLASSPATH=$$CLASSPATH:./classes:./lib/ice-3.6.3.jar:./lib/jl1.0.1.jar
 
 compile: Jexport
 	$(CC) $(JDIRFLAGS) $(JFLAGS) $(SRCDIR)/Sound.java

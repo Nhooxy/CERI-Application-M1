@@ -8,7 +8,7 @@
         <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:WSPlayerIntf">
             <complexType name="RequestType">
                 <sequence>
-                    <element name="nomChanson" type="xs:string"/>
+                    <element name="nomCommande" type="xs:string"/>
                 </sequence>
             </complexType>
             <complexType name="ResponseType">
@@ -18,24 +18,24 @@
             </complexType>
         </schema>
     </types>
-    <message name="jouerChanson0Request">
+    <message name="actionProcess0Request">
         <part name="Request" type="ns1:RequestType"/>
     </message>
-    <message name="jouerChanson0Response">
+    <message name="actionProcess0Response">
         <part name="return" type="ns1:ResponseType"/>
     </message>
     <portType name="IWSPlayer">
-        <operation name="jouerChanson">
-            <input message="tns:jouerChanson0Request"/>
-            <output message="tns:jouerChanson0Response"/>
+        <operation name="actionProcess">
+            <input message="tns:actionProcess0Request"/>
+            <output message="tns:actionProcess0Response"/>
         </operation>
     </portType>
     <binding name="IWSPlayerbinding" type="tns:IWSPlayer">
         <binding xmlns="http://schemas.xmlsoap.org/wsdl/soap/" style="rpc"
                  transport="http://schemas.xmlsoap.org/soap/http"/>
-        <operation name="jouerChanson">
+        <operation name="actionProcess">
             <operation xmlns="http://schemas.xmlsoap.org/wsdl/soap/"
-                       soapAction="urn:WSPlayerIntf-IWSPlayer#jouerChanson" style="rpc"/>
+                       soapAction="urn:WSPlayerIntf-IWSPlayer#actionProcess" style="rpc"/>
             <input>
                 <body xmlns="http://schemas.xmlsoap.org/wsdl/soap/" use="encoded"
                       encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WSPlayerIntf-IWSPlayer"/>

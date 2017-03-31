@@ -2,6 +2,7 @@
 #define COMMUNICATION_H
 
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 

@@ -1,10 +1,9 @@
 #include "callWSListenator.h"
 #include "Communication.h"
-#include "../generated/Bibliotheque.h"
 #include <string.h>
+#include <cstdlib>
 
 using namespace std;
-using namespace Bibliotheque;
 
 /*!
  * Execute la commande envoyé par un client.

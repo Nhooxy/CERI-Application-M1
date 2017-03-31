@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <cstdlib>
+#include <iostream>
 
 using namespace std;
 
@@ -38,12 +40,12 @@ string Communication::searchAction(string action) {
     vector <string> stringTab = explode(action, " ");
 
     for (vector<string>::iterator it = stringTab.begin(); it != stringTab.end(); ++it) {
-        /*if (find(lecture.begin(), lecture.end(), it) != lecture.end()) {
+        if (find(lecture.begin(), lecture.end(), *it) != lecture.end()) {
             cout << "jouer" << endl;
         }
-        if (find(pause.begin(), pause.end(), it) != pause.end()) {
+        if (find(pause.begin(), pause.end(), *it) != pause.end()) {
             cout << "pause" << endl;
-        }*/
+        }
     }
 
     return "not Implemented";

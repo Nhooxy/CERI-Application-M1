@@ -23,7 +23,7 @@ WSDLDIR=wsdl
 
 # Options de compilations
 CFLAGS=-g -Wno-deprecated -I /usr/include -I /usr/local/include -D _POSIX_THREADS -std=c++0x -D _REENTRANT
-LDFLAGS=-L /usr/include -pthread -lIce -lIceUtil -lpthread -lvlc
+LDFLAGS=-lIce -lIceUtil -lpthread -lvlc
 GENFLAGS=-I $(GENDIR)/.
 OUTPUTICE=--output-dir $(GENDIR)
 
@@ -53,7 +53,7 @@ $(EXEC): $(OBJSRC) $(OBJLIB) $(OBJGEN)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(GENDIR)/%.cpp
-	$(CC) -o $@ -c $< $(GENFLAGS) $(CFLAGS)
+	$(CC) -o $@ -c $< $(GENFLAGS)
 
 $(OBJDIR)/%.o: $(LIBDIR)/%.cpp
 	$(CC) -o $@ -c $< $(CFLAGS)

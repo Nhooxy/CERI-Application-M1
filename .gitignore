@@ -97,3 +97,7 @@ out
 /WS/cmake-build-debug/
 /WS/generated/*
 /client/classes/generer/Bibliotheque/*
+
+mobile/app/FirstAndroidView/\.classpath
+
+mobile/app/FirstAndroidView/\.project

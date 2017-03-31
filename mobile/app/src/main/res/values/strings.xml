@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Listenator</string>
+    <string name="title_home">Home</string>
+    <string name="title_list">Musiques</string>
+    <string name="title_search">Rechercher</string>
+    <string name="button_record">record</string>
+    <string name="reconnaisance">Reconnaissance en cours&#8230;</string>
+    <string name="pasdetranslateur">Pas de service de reconnaissance vocale</string>
+
+    <string name="menu_settings">Settings</string>
+    <string name="create_account">Créer un compte</string>
+    <string name="email">Adresse email</string>
+    <string name="password">Mot de passe</string>
+    <string name="connect">Se connecter</string>
+    <string name="valid">Créer</string>
+    <string name="title_activity_login_display">LoginDisplayActivity</string>
+    <string name="hint_mail">"user mail"</string>
+    <string name="email_format_error">"Le champs email ne correspond pas au format d'une adresse mail"</string>
+    <string name="email_or_password_empty">"L'adresse email et mot de passe sont obligatoires"</string>
+    <string name="connection_create">Erreur de connection, le compte n\'a pas été créé</string>
+</resources>

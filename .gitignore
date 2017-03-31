@@ -96,3 +96,4 @@ out
 /client/intro.mp3
 /WS/cmake-build-debug/
 /WS/generated/*
+/client/classes/generer/Bibliotheque/*

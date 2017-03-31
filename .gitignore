@@ -104,3 +104,4 @@ mobile/app/FirstAndroidView/\.project
 
 serveur/serveurIce\.run
 /webService/WSListenator.run
+/webService/sources/WSListenator.h

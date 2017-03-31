@@ -21,6 +21,7 @@ GENDIR=generated
 
 # Options de compilations
 CFLAGS=-lIce -lIceUtil -lpthread -lvlc
+STDFLAGS=-std=c++0x
 GENFLAGS=-I $(GENDIR)/.
 OUTPUTICE=--output-dir $(GENDIR)
 
@@ -45,7 +46,7 @@ $(OBJDIR)/%.o: $(GENDIR)/%.cpp
 	$(CC) -o $@ -c $< $(GENFLAGS) $(CFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(CFLAGS) $(STDFLAGS)
 
 run:
 	./$(EXEC)

@@ -36,8 +36,8 @@ int Communication::run(int argc, char *argv[]) {
     try {
         communicator = Ice::initialize(argc, argv);
         ManagementPrx object = ManagementPrx::checkedCast(communicator->stringToProxy("SimpleBibliotheque:default -p 10000"));
-        cout << object->streamOnURL("dazzle", "clientID") << endl;
-        communicator->destroy();
+        object->streamOnURL("dazzle", "clientID/");
+        //communicator->destroy();
     }
     catch (const Ice::Exception &ex1) {
         cerr << ex1 << endl;
@@ -63,12 +63,13 @@ string Communication::searchAction(string action) {
     for (vector<string>::iterator it = stringTab.begin(); it != stringTab.end(); ++it) {
         if (find(lecture.begin(), lecture.end(), *it) != lecture.end()) {
             //todo wip
+            action += "/";
             char *cstr = new char[action.length() + 1];
             strcpy(cstr, action.c_str());
             char* aze[] = {cstr};
             this->run(1, aze);
             // todo ICE appeler streamOnURL de titre et renvoie l'url client que lon return ici
-            cout << "jouer" << endl;
+            //cout << "jouer sur " << this->url << endl;
         }
         if (find(pause.begin(), pause.end(), *it) != pause.end()) {
             // todo aucune idée.... (comment faire une pause ? )
@@ -82,23 +83,3 @@ string Communication::searchAction(string action) {
 string Communication::searchMusique(string nom) {
     return nom;
 }
-
-
-/*
- * Méthode main ud serveur, permet de lancer la communication.
-int main(int argc, char *argv[]) {
-    int status = 0;
-    Ice::CommunicatorPtr ic;
-    ic = Ice::initialize(argc, argv);
-    Ice::ObjectAdapterPtr adapter = ic->createObjectAdapterWithEndpoints("BibliothequeAdapter", "default -p 10000");
-    Ice::ObjectPtr object = new BibliothequeI;
-    adapter->add(object, ic->stringToIdentity("SimpleBibliotheque"));
-    adapter->activate();
-    ic->waitForShutdown();
-    if (ic) {
-        ic->destroy();
-    }
-
-    return status;
-}
- */

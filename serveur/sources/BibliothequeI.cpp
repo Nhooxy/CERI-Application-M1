@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/types.h>
+#include <thread>
 
 using namespace std;
 using namespace Bibliotheque;
@@ -68,7 +69,6 @@ string BibliothequeI::streamOnURL(const string &musique, const string &client, c
     string tmp =
             "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/" + client + musique + "}";
     const char *sout = tmp.c_str();
-    cout << sout << endl;
     const char *media_name = (musique).c_str();
 
     vlc = libvlc_new(0, NULL);
@@ -82,7 +82,10 @@ string BibliothequeI::streamOnURL(const string &musique, const string &client, c
             true,
             false
     );
-    libvlc_vlm_play_media(vlc, media_name);
+    thread t1(libvlc_vlm_play_media, vlc, media_name); // marche pas sans le t join mais c'etait l'interrer ... poursuivre 
+    //libvlc_vlm_play_media(vlc, media_name);
+    t1.join();
+    cout << "127.0.0.1:8090/" + client + musique << endl;
 
-    return "127.0.0.1:8090/" + MUSIC_DIR + "/" + musique;
+    return "127.0.0.1:8090/" + client + musique;
 }

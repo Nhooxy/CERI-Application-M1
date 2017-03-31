@@ -9,6 +9,8 @@ using namespace std;
 
 class Communication : public Ice::Application {
 public:
+    string url;
+
     virtual int run(int, char*[]);
 
     string searchAction(string action);

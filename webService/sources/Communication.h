@@ -3,11 +3,14 @@
 
 #include <string>
 #include <cstdlib>
+#include <Ice/Ice.h>
 
 using namespace std;
 
-class Communication {
+class Communication : public Ice::Application {
 public:
+    virtual int run(int, char*[]);
+
     string searchAction(string action);
 
     string searchMusique(string nom);

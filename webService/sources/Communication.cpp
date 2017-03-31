@@ -30,6 +30,27 @@ vector <string> explode(string str, string delimiter) {
     return elements;
 }
 
+
+int Communication::run(int argc, char *argv[]) {
+    Ice::CommunicatorPtr communicator;
+    try {
+        communicator = Ice::initialize(argc, argv);
+        ManagementPrx object = ManagementPrx::checkedCast(communicator->stringToProxy("BibliothequeAdapter:default -p 10000"));
+        object->streamOnURL("dazzle", "clientID");
+        int i = 0;
+        cin >> i;
+        communicator->destroy();
+    }
+    catch (const Ice::Exception &ex1) {
+        cerr << ex1 << endl;
+    }
+    return 0;
+    /*string titre = this->searchMusique("dazzle");
+    Bibliotheque::ManagementPrx manager;
+    cout <<  manager->search()[0]<<endl;
+    //manager.streamOnURL(titre, "clientID");*/
+}
+
 /**
  * Permet de déterminer l'action à réaliser et retourne le cas échant le serveur de stream.
  *
@@ -43,9 +64,11 @@ string Communication::searchAction(string action) {
 
     for (vector<string>::iterator it = stringTab.begin(); it != stringTab.end(); ++it) {
         if (find(lecture.begin(), lecture.end(), *it) != lecture.end()) {
-            string titre = this->searchMusique("dazzle");
-            Bibliotheque::ManagementPrx manager;
-            manager->streamOnURL("dazzle", "test");
+            //todo wip
+            char *cstr = new char[action.length() + 1];
+            strcpy(cstr, action.c_str());
+            char* aze[] = {cstr};
+            this->run(1, aze);
             // todo ICE appeler streamOnURL de titre et renvoie l'url client que lon return ici
             cout << "jouer" << endl;
         }

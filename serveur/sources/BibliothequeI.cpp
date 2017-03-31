@@ -20,7 +20,8 @@ const string BibliothequeI::MUSIC_DIR = "music";
 /**
  * Permet de recevoir un fichier du client (copie le fichier dans le repertoire courant du serveur).
  */
-void BibliothequeI::copyFile(const string &musique, Ice::Int offset, const sb &bytes, Ice::Int size, const Ice::Current &) {
+void
+BibliothequeI::copyFile(const string &musique, Ice::Int offset, const sb &bytes, Ice::Int size, const Ice::Current &) {
     cout << "network connection" << endl;
     ofstream myfile(musique.c_str(), ios::out | ios::app | ios::binary);
     myfile.seekp(offset, ios::beg);
@@ -65,9 +66,9 @@ void BibliothequeI::streamOnURL(const string &musique, const Ice::Current &) {
     const char *url;
     string tmp = "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/" + musique + "}";
     const char *sout = tmp.c_str();
-    const char *media_name = (MUSIC_DIR + musique).c_str();
+    const char *media_name = musique.c_str();
 
     vlc = libvlc_new(0, NULL);
-    libvlc_vlm_add_broadcast(vlc, media_name, musique.c_str(), sout, 0, NULL, true, false);
+    libvlc_vlm_add_broadcast(vlc, media_name, (MUSIC_DIR + "/" + musique).c_str(), sout, 0, NULL, true, false);
     libvlc_vlm_play_media(vlc, media_name);
 }

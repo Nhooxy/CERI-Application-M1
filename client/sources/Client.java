@@ -18,10 +18,12 @@ public class Client {
         String listFile[] = manager.search();
         int i = 0;
         while (i < listFile.length) {
+            System.out.println();
+            System.out.println("Les fichiers disponible sont : ");
             System.out.println(listFile[i]);
+            System.out.println();
             i++;
         }
-        //Collections.sort();
         if (0 == i) {
             System.out.println("Pas de musique");
         }

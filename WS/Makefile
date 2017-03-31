@@ -10,6 +10,7 @@
 
 # Compilateur
 CC=g++
+SLICE=slice2cpp
 
 # Répertoires
 SRCDIR=sources
@@ -17,11 +18,13 @@ OBJDIR=tmp
 LIBDIR=lib
 CONFDIR=conf
 GENDIR=generated
+ICEDIR=ice
 WSDLDIR=wsdl
 
 # Options de compilations
 CFLAGS=-g -Wno-deprecated -I /usr/include -I /usr/local/include -D _POSIX_THREADS -std=c++0x -D _REENTRANT
 LDFLAGS=-L /usr/include -pthread
+OUTPUTICE=--output-dir $(GENDIR)
 
 # Sources
 SRC=$(wildcard $(SRCDIR)/*.cpp)
@@ -36,6 +39,12 @@ EXEC=WSListenator.run
 
 # Ordre
 all: $(EXEC)
+
+generate:
+	wsdl2h -g -k -o $(SRCDIR)/WSListenator.h $(WSDLDIR)/WSListenator.wsdl
+	soapcpp2 -S -d $(GENDIR)/ $(SRCDIR)/WSListenator.h
+	rm -f $(GENDIR)/soapServerLib.cpp
+	$(SLICE) $(OUTPUTICE) $(ICEDIR)/*.ice
 
 install: generate
 
@@ -60,8 +69,3 @@ mrproper: clean
 
 run:
 	./$(EXEC) $(CONFDIR)/WSListenator.conf
-
-generate:
-	wsdl2h -g -k -o $(SRCDIR)/WSListenator.h $(WSDLDIR)/WSListenator.wsdl
-	soapcpp2 -S -d $(GENDIR)/ $(SRCDIR)/WSListenator.h
-	rm -f $(GENDIR)/soapServerLib.cpp

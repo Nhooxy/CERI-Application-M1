@@ -23,7 +23,7 @@ const string BibliothequeI::MUSIC_DIR = "music";
 void
 BibliothequeI::copyFile(const string &musique, Ice::Int offset, const sb &bytes, Ice::Int size, const Ice::Current &) {
     cout << "network connection" << endl;
-    ofstream myfile(musique.c_str(), ios::out | ios::app | ios::binary);
+    ofstream myfile((MUSIC_DIR + "/" + musique).c_str(), ios::out | ios::app | ios::binary);
     myfile.seekp(offset, ios::beg);
     myfile.write((char *) (&bytes[0]), size);
     myfile.close();
@@ -33,7 +33,7 @@ BibliothequeI::copyFile(const string &musique, Ice::Int offset, const sb &bytes,
  * Permet de supprimer le fichier de musique voulu.
  */
 void BibliothequeI::removeFile(const string &musique, const Ice::Current &) {
-    system(("rm " + musique).c_str());
+    system(("rm " + MUSIC_DIR + "/" + musique).c_str());
 }
 
 /**
@@ -49,6 +49,7 @@ sstring BibliothequeI::search(const Ice::Current &) {
     while (lecture = readdir(rep)) {
         string tmp = lecture->d_name;
         if ("." != tmp && ".." != tmp) {
+            tmp = tmp.erase(tmp.rfind('.'));
             list.push_back(tmp);
         }
     }

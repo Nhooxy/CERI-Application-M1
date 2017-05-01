@@ -70,7 +70,6 @@ freeline_project_description.json
 *.app
 *.ctxt
 .mtj.tmp/
-*.jar
 *.war
 *.ear
 *.zip
@@ -96,8 +95,10 @@ out
 /client/intro.mp3
 /webService/cmake-build-debug/
 /webService/generated/*
+/configIceBox/db/*
 /client/classes/generated/Bibliotheque/*
-
+/serveur/meta-Serveur/generated/*
+/serveur/serveur-esclave/generated/*
 mobile/app/FirstAndroidView/\.classpath
 
 mobile/app/FirstAndroidView/\.project
@@ -105,3 +106,5 @@ mobile/app/FirstAndroidView/\.project
 serveur/serveurIce\.run
 /webService/WSListenator.run
 /webService/sources/WSListenator.h
+appli.V1.old.tar.7z
+client/classes/*

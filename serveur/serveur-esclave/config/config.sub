@@ -1,0 +1,9 @@
+ServeurEsclave.Subscriber.Endpoints=tcp:udp
+
+Ice.Default.Host=localhost
+
+TopicManager.Proxy=IceStormApp/TopicManager:default -h localhost -p 10000
+
+Ice.Admin.InstanceName=subscriber
+IceMX.Metrics.Debug.GroupBy=id
+IceMX.Metrics.ByParent.GroupBy=parent

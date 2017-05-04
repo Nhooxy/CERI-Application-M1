@@ -47,7 +47,10 @@ compile: jexport
 	$(CC) $(JDIRFLAGS) $(JFLAGS) $(SRCDIR)/client/*
 
 jar: compile
+	unzip $(LIBDIR)/jl1.0.1.jar -d $(LIBDIR)
+	rm -rf $(LIBDIR)/META-INF
 	jar cvmf META-INF/MANIFEST.MF $(EXEC) $(CLASSDIR)/* $(LIBDIR)/*
+	rm -rf $(LIBDIR)/javazoom
 
 run:
 	java -jar Client.jar

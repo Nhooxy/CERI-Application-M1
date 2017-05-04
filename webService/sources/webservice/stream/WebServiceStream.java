@@ -42,10 +42,10 @@ public class WebServiceStream implements IWebServiceStream {
     }
 
     private String findMusique(String requete) {
-        return "dazzle";
+        return "dazzle.mp3";
     }
 
     private String doActionOnServeur(String clientID, String action, String musique) {
-        return "http://127.0.0.1/" + clientID + "/" + musique;
+        return "http://127.0.0.1:8090/" + clientID + "/" + musique;
     }
 }

@@ -15,13 +15,14 @@ public class Client {
             URL wsdlUrl = new URL("http://127.0.0.1:8080/WebServiceStream/WebServiceStreamService?wsdl");
             QName qname = new QName("http://stream.webservice/", "WebServiceStreamService");
             Service service = Service.create(wsdlUrl, qname);
-            WebServiceStream wsStream = service.getPort(WebServiceStream.class);
+            wsStream = service.getPort(WebServiceStream.class);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
         if (null != wsStream) {
             System.out.println(wsStream.bonjour("Pierre"));
+            System.out.println(wsStream.requeteClient("Pierre ecouter dazzle"));
         }
     }
 }

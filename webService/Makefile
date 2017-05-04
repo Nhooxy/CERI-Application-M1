@@ -32,7 +32,9 @@ generationWS:
 clean:
 	rm -rf $(TMPDIR)
 
-deploy:
+startGlassfish:
 	~/glassfish4/bin/asadmin start-domain
+
+deploy:
 	~/glassfish4/bin/asadmin deploy --force $(SERVICE_NAME).war
 

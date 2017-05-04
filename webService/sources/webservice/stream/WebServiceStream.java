@@ -26,7 +26,26 @@ public class WebServiceStream implements IWebServiceStream {
      * @return string url serveur.
      */
     public String requeteClient(String requete) {
+        String clientID = findClientID(requete);
+        String action = findAction(requete);
+        String musique = findMusique(requete);
 
-        return "bonjour " + requete;
+        return doActionOnServeur(clientID, action, musique);
+    }
+
+    private String findClientID(String requete) {
+        return "123";
+    }
+
+    private String findAction(String requete) {
+        return "ecouter";
+    }
+
+    private String findMusique(String requete) {
+        return "dazzle";
+    }
+
+    private String doActionOnServeur(String clientID, String action, String musique) {
+        return "http://127.0.0.1/" + clientID + "/" + musique;
     }
 }

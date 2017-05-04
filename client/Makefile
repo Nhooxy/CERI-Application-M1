@@ -50,7 +50,4 @@ jar: compile
 	jar cvmf META-INF/MANIFEST.MF $(EXEC) $(CLASSDIR)/* $(LIBDIR)/*
 
 run:
-	java client.Client
-
-start:
 	java -jar Client.jar

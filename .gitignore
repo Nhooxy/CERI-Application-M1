@@ -108,3 +108,5 @@ serveur/serveurIce\.run
 /webService/sources/WSListenator.h
 appli.V1.old.tar.7z
 client/classes/*
+tmp/*
+tmp

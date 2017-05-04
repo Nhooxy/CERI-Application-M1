@@ -8,65 +8,31 @@
 #
 #======================================================
 
-# Compilateur
-CC=g++
-SLICE=slice2cpp
+CLASSNAME=webservice.stream.WebServiceStream
+SERVICE_NAME=WebServiceStream
+SRCDIR=sources/webservice/stream
+TMPDIR=tmp
 
-# Répertoires
-SRCDIR=sources
-OBJDIR=tmp
-LIBDIR=lib
-CONFDIR=conf
-GENDIR=generated
-ICEDIR=ice
-WSDLDIR=wsdl
+all: precompile compile generationWS clean
 
-# Options de compilations
-CFLAGS=-g -Wno-deprecated -I /usr/include -I /usr/local/include -D _POSIX_THREADS -std=c++0x -D _REENTRANT
-LDFLAGS=-lIce -lIceUtil -lpthread -lvlc
-GENFLAGS=-I $(GENDIR)/.
-OUTPUTICE=--output-dir $(GENDIR)
+precompile:
+	rm -rf $(TMPDIR)
+	mkdir $(TMPDIR)
+	rm -rf WEB-INF
+	mkdir -p WEB-INF/classes
 
-# Sources
-SRC=$(wildcard $(SRCDIR)/*.cpp)
-SRCLIB=$(wildcard $(LIBDIR)/*.cpp)
-SRCGEN=$(wildcard $(GENDIR)/*.cpp)
-OBJSRC=$(SRC:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
-OBJLIB=$(SRCLIB:$(LIBDIR)/%.cpp=$(OBJDIR)/%.o)
-OBJGEN=$(SRCGEN:$(GENDIR)/%.cpp=$(OBJDIR)/%.o)
+compile:
+	javac $(SRCDIR)/*.java -d $(TMPDIR)/
 
-# Nom de l'executable
-EXEC=WSListenator.run
-
-# Ordre
-all: $(EXEC)
-
-generate:
-	wsdl2h -g -k -o $(SRCDIR)/WSListenator.h $(WSDLDIR)/WSListenator.wsdl
-	soapcpp2 -S -d $(GENDIR)/ $(SRCDIR)/WSListenator.h
-	rm -f $(GENDIR)/soapServerLib.cpp
-	$(SLICE) $(OUTPUTICE) $(ICEDIR)/*.ice
-
-install: generate $(EXEC)
-
-$(EXEC): $(OBJSRC) $(OBJLIB) $(OBJGEN)
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-$(OBJDIR)/%.o: $(GENDIR)/%.cpp
-	$(CC) -o $@ -c $< $(GENFLAGS)
-
-$(OBJDIR)/%.o: $(LIBDIR)/%.cpp
-	$(CC) -o $@ -c $< $(CFLAGS)
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CC) -o $@ -c $< $(CFLAGS)
+generationWS:
+	cp -r $(TMPDIR)/* WEB-INF/classes/
+	wsgen -cp WEB-INF/classes:$$CLASSPATH -d WEB-INF/classes -wsdl $(CLASSNAME)
+	jar cvf $(SERVICE_NAME).war WEB-INF
 
 clean:
-	rm -f $(OBJDIR)/*.o
+	rm -rf $(TMPDIR)
 
-mrproper: clean
-	rm -f $(GENDIR)/*
-	rm -f $(EXEC)
+deploy:
+	~/glassfish4/bin/asadmin start-domain
+	~/glassfish4/bin/asadmin deploy --force $(SERVICE_NAME).war
 
-run:
-	./$(EXEC) $(CONFDIR)/WSListenator.conf

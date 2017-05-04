@@ -11,6 +11,8 @@ via IceGrid pour les serveurs esclaves.
 
 Cela m'a fait m'égarer sur de nombreux point... Au final, IceGrid n'est pas implémenté...
 Le méta serveur communique avec un serveur esclave via iceStorm.
+Et je n'ai pas réussi a faire en sorte qu'il y est plusierus serveur esclave distribué via 
+Ice grid comme je le souhaité.
 
 Le client mobile sous android n'a pas été finalisé. Celui-ci peux lire une musique en streaming
 mais ou l'url et le nom de la musique est écrite en dure... donc il n'apporte que peu 

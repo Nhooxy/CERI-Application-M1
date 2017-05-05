@@ -1,6 +1,9 @@
 package webservice.stream;
 
 import javax.jws.WebService;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @WebService(name = "WebServiceStream")
 public class WebServiceStream implements IWebServiceStream {
@@ -26,22 +29,48 @@ public class WebServiceStream implements IWebServiceStream {
      * @return string url serveur.
      */
     public String requeteClient(String requete) {
-        String clientID = findClientID(requete);
-        String action = findAction(requete);
-        String musique = findMusique(requete);
+        List<String> separated = Arrays.asList(requete.split("."));
+
+        String clientID = separated.get(0);
+        String action = findAction(separated);
+        String musique = findMusique(separated);
 
         return doActionOnServeur(clientID, action, musique);
     }
 
-    private String findClientID(String requete) {
-        return "123";
+    /**
+     * Permet de trouver l'action à réaliser.
+     *
+     * @param requete liste des mot envoyer par le client.
+     * @return string action a faire.
+     */
+    private String findAction(List<String> requete) {
+        List<String> action = giveAction();
+        for (String wordAction : requete) {
+            if (action.contains(wordAction)) {
+
+                return wordAction;
+            }
+        }
+
+        return "";
     }
 
-    private String findAction(String requete) {
-        return "ecouter";
+    private List<String> giveAction() {
+        List<String> action = new ArrayList<>();
+        action.add("ecouter");
+        action.add("lire");
+        action.add("entendre");
+        action.add("ecouté");
+        action.add("pause");
+        action.add("stop");
+        action.add("arreter");
+        action.add("arreté");
+
+        return action;
     }
 
-    private String findMusique(String requete) {
+    private String findMusique(List<String> requete) {
         return "dazzle.mp3";
     }
 

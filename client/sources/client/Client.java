@@ -13,6 +13,7 @@ public class Client {
         WebServiceStream wsStream = null;
         String url = null;
         Sound test = null;
+        String requete = null;
 
         try {
             URL wsdlUrl = new URL("http://127.0.0.1:8080/WebServiceStream/WebServiceStreamService?wsdl");
@@ -25,8 +26,9 @@ public class Client {
 
         if (null != wsStream) {
             System.out.println(wsStream.bonjour("Pierre"));
-            System.out.println(wsStream.requeteClient("Pierre ecouter dazzle"));
-            url = wsStream.requeteClient("Pierre ecouter dazzle");
+            requete = "Pierre.ecouter.dazzle";
+            url = wsStream.requeteClient(requete);
+            System.out.println(url);
         }
 
         try {

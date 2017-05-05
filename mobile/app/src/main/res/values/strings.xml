@@ -18,4 +18,5 @@
     <string name="email_format_error">"Le champs email ne correspond pas au format d'une adresse mail"</string>
     <string name="email_or_password_empty">"L'adresse email et mot de passe sont obligatoires"</string>
     <string name="connection_create">Erreur de connection, le compte n\'a pas été créé</string>
+    <string name="urlWebServeur">URL WebServer</string>
 </resources>

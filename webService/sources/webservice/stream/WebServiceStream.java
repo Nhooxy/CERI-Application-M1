@@ -56,6 +56,11 @@ public class WebServiceStream implements IWebServiceStream {
         return "";
     }
 
+    /**
+     * Renvoie les actions disponible par le serveur.
+     *
+     * @return list string.
+     */
     private List<String> giveAction() {
         List<String> action = new ArrayList<>();
         action.add("ecouter");
@@ -70,11 +75,28 @@ public class WebServiceStream implements IWebServiceStream {
         return action;
     }
 
+    /**
+     * Doit trouver la musique au sein d'une bdd ? fichier ? puis renvoyer le titre.
+     *
+     * @param requete list de string
+     *
+     * @return string titre de la chanson.
+     */
     private String findMusique(List<String> requete) {
         return "dazzle.mp3";
     }
 
+    /**
+     * Appel avec ICE sur le meta serveur afin de lancer le stream, renvoie l'url du stream.
+     *
+     * @param clientID l'id du client.
+     * @param action   l'action a realiser.
+     * @param musique  la musique a lire.
+     *
+     * @return url string.
+     */
     private String doActionOnServeur(String clientID, String action, String musique) {
+        // appel
         return "http://127.0.0.1:8090/" + clientID + "/" + musique;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.nhooxy.listenator;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -9,23 +10,22 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import org.ksoap2.serialization.SoapObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoginMainActivity extends CommonLoginActivity {
 
+    private List<ResolveInfo> activities;
     /**
      * Au début de l'initialisation de l'app
      *
@@ -54,7 +54,7 @@ public class LoginMainActivity extends CommonLoginActivity {
 
         // Disable button if no recognition service is present
         PackageManager pm = getPackageManager();
-        List<ResolveInfo> activities = pm.queryIntentActivities(
+        activities = pm.queryIntentActivities(
                 new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH),
                 0
         );
@@ -66,11 +66,9 @@ public class LoginMainActivity extends CommonLoginActivity {
         //todo here !
         // faire reconnaissance
         //envoyer le string de reconnaissance
-        //this.WSListenator(activities.toString());
-
-        //lire le flux avec lecture(); ok
-
-        this.lecture(URL_SERVER_STREAM);
+        // activities.toString().replaceAll(" ", ".")
+        //lire le flux avec lecture();
+        //this.lecture(URL_SERVER_STREAM);
 
     }
 
@@ -79,6 +77,16 @@ public class LoginMainActivity extends CommonLoginActivity {
      */
     public void speakButtonClicked(View v) {
         startVoiceRecognitionActivity();
+        this.WSListenator(activities.toString().replaceAll(" ", "."));
+    }
+
+    /**
+     * Handle the action of the button being clicked
+     */
+    public void urlButtonClicked(View v) {
+        final EditText urlText = (EditText) findViewById(R.id.editText);
+        SOAP_URL = "http://" + urlText.getText().toString() + ":8080/WebServiceStream/WebServiceStreamService?wsdl";
+        showAlert(SOAP_URL);
     }
 
     /**
@@ -107,34 +115,17 @@ public class LoginMainActivity extends CommonLoginActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    //com avec WS
-
     public void WSListenator(String reconnaissance) {
-        String query = null;
-        URL url = null;
+        SoapObject soap = null;
         try {
-            query = URLEncoder.encode(reconnaissance, "utf-8");
-            url = new URL(URL_WEB_SERVICE + query);
-            // Ouverture de la connexion
-            HttpURLConnection urlConnection = null;
-            if (null != url) {
-                urlConnection = (HttpURLConnection) url.openConnection();
-            }
-            // Connexion à l'URL
-            if (null != urlConnection) {
-                urlConnection.connect();
-                // Si le serveur nous répond avec un code OK
-                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    // todo action urlConnection.getInputStream();
-                }
-            }
+            soap = SoapHelper.soap("requeteClient", reconnaissance);
+            showAlert(soap.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     // lecteuer
-
     public void lecture(String url) {
         try {
             mediaPlayer = new MediaPlayer();
@@ -182,5 +173,19 @@ public class LoginMainActivity extends CommonLoginActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void showAlert(String str) {
+        new AlertDialog.Builder(LoginMainActivity.this)
+                .setTitle("Your Alert")
+                .setMessage(str)
+                .setCancelable(true)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 }

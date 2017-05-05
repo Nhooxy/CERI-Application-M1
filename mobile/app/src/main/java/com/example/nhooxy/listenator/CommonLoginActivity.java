@@ -13,10 +13,12 @@ public class CommonLoginActivity extends Activity {
 
     protected MediaPlayer mediaPlayer;
     protected static final int REQUEST_CODE = 1234;
-    protected static final String URL_WEB_SERVICE = "http://MonWebService.com/search?q=";
-    //    protected static final String URL_SERVER_STREAM = "http://192.168.1.18:8090/dazzle.mp3";
-    protected static final String URL_SERVER_STREAM = "http://10.120.10.85:8090/dazzle.mp3";
     protected ListView wordsList;
+
+    protected static String SOAP_URL = "";
+    protected final static String SOAP_ACTION = "WebServiceStreamService";
+    protected final static String SOAP_METHOD_NAME = "requeteClient";
+    protected final static String SOAP_NAMESPACE = "http://stream.webservice/";
 
     protected BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

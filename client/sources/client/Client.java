@@ -26,7 +26,7 @@ public class Client {
 
         if (null != wsStream) {
             System.out.println(wsStream.bonjour("Pierre"));
-            requete = "Pierre.ecouter.dazzle";
+            requete = "123.ecouter.dazzle.mp3";
             url = wsStream.requeteClient(requete);
             System.out.println(url);
         }

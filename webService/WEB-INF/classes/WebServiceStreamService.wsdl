@@ -6,31 +6,31 @@
       <xsd:import namespace="http://stream.webservice/" schemaLocation="WebServiceStreamService_schema1.xsd"/>
     </xsd:schema>
   </types>
-  <message name="requeteClient">
-    <part name="parameters" element="tns:requeteClient"/>
-  </message>
-  <message name="requeteClientResponse">
-    <part name="parameters" element="tns:requeteClientResponse"/>
-  </message>
   <message name="bonjour">
     <part name="parameters" element="tns:bonjour"/>
   </message>
   <message name="bonjourResponse">
     <part name="parameters" element="tns:bonjourResponse"/>
   </message>
+  <message name="requeteClient">
+    <part name="parameters" element="tns:requeteClient"/>
+  </message>
+  <message name="requeteClientResponse">
+    <part name="parameters" element="tns:requeteClientResponse"/>
+  </message>
   <portType name="WebServiceStream">
-    <operation name="requeteClient">
-      <input wsam:Action="http://stream.webservice/WebServiceStream/requeteClientRequest" message="tns:requeteClient"/>
-      <output wsam:Action="http://stream.webservice/WebServiceStream/requeteClientResponse" message="tns:requeteClientResponse"/>
-    </operation>
     <operation name="bonjour">
       <input wsam:Action="http://stream.webservice/WebServiceStream/bonjourRequest" message="tns:bonjour"/>
       <output wsam:Action="http://stream.webservice/WebServiceStream/bonjourResponse" message="tns:bonjourResponse"/>
     </operation>
+    <operation name="requeteClient">
+      <input wsam:Action="http://stream.webservice/WebServiceStream/requeteClientRequest" message="tns:requeteClient"/>
+      <output wsam:Action="http://stream.webservice/WebServiceStream/requeteClientResponse" message="tns:requeteClientResponse"/>
+    </operation>
   </portType>
   <binding name="WebServiceStreamPortBinding" type="tns:WebServiceStream">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-    <operation name="requeteClient">
+    <operation name="bonjour">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -39,7 +39,7 @@
         <soap:body use="literal"/>
       </output>
     </operation>
-    <operation name="bonjour">
+    <operation name="requeteClient">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>

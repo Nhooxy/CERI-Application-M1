@@ -1,6 +1,8 @@
 package com.example.nhooxy.listenator;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -37,4 +39,22 @@ public class CommonLoginActivity extends Activity {
             return false;
         }
     };
+
+    /**
+     * Permet d'afficher une alerte avec la string passe en parametre.
+     * @param str
+     */
+    public void showAlert(String str) {
+        new AlertDialog.Builder(CommonLoginActivity.this)
+                .setTitle("Alerte")
+                .setMessage(str)
+                .setCancelable(true)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
 }

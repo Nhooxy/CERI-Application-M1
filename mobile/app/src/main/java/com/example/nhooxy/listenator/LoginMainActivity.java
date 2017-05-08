@@ -1,7 +1,5 @@
 package com.example.nhooxy.listenator;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -22,10 +20,12 @@ import org.ksoap2.serialization.SoapObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class LoginMainActivity extends CommonLoginActivity {
 
     private List<ResolveInfo> activities;
+
     /**
      * Au début de l'initialisation de l'app
      *
@@ -76,8 +76,12 @@ public class LoginMainActivity extends CommonLoginActivity {
      * Handle the action of the button being clicked
      */
     public void speakButtonClicked(View v) {
-        startVoiceRecognitionActivity();
-        this.WSListenator(activities.toString().replaceAll(" ", "."));
+        // todo remove (on enleve la reconnaisance pour accellerr les test
+        String result = "ecouter dazzle";
+        String url = WSListenator(UUID.randomUUID().toString() + "." + result.replaceAll(" ", "."));
+        showAlert(url);
+        // todo fin remove
+        //startVoiceRecognitionActivity();
     }
 
     /**
@@ -85,7 +89,9 @@ public class LoginMainActivity extends CommonLoginActivity {
      */
     public void urlButtonClicked(View v) {
         final EditText urlText = (EditText) findViewById(R.id.editText);
-        SOAP_URL = "http://" + urlText.getText().toString() + ":8080/WebServiceStream/WebServiceStreamService?wsdl";
+        // pour les tests adresse par defaut.
+        SOAP_URL = urlText.getText().toString().equals("") ? "http://192.168.1.18:8080/WebServiceStream/WebServiceStreamService?wsdl"
+                : "http://" + urlText.getText().toString() + ":8080/WebServiceStream/WebServiceStreamService?wsdl";
         showAlert(SOAP_URL);
     }
 
@@ -111,18 +117,28 @@ public class LoginMainActivity extends CommonLoginActivity {
                     RecognizerIntent.EXTRA_RESULTS);
             this.wordsList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                     matches));
+
+            String result = matches.get(0);
+            String url = WSListenator(UUID.randomUUID().toString() + "." + result.replaceAll(" ", "."));
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void WSListenator(String reconnaissance) {
-        SoapObject soap = null;
+    /**
+     * Permet d'appeler le web service et d'avoir l'url en reponse.
+     * @param reconnaissance
+     * @return
+     */
+    public String WSListenator(String reconnaissance) {
         try {
-            soap = SoapHelper.soap("requeteClient", reconnaissance);
-            showAlert(soap.toString());
+            showAlert("test");
+            return SoapHelper.soap("requeteClient", reconnaissance).toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return "Web Service non atteint.";
     }
 
     // lecteuer
@@ -173,19 +189,5 @@ public class LoginMainActivity extends CommonLoginActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void showAlert(String str) {
-        new AlertDialog.Builder(LoginMainActivity.this)
-                .setTitle("Your Alert")
-                .setMessage(str)
-                .setCancelable(true)
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
     }
 }

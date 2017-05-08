@@ -1,8 +1,5 @@
 package com.example.nhooxy.listenator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -12,6 +9,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Ecran de connection.
@@ -70,6 +70,20 @@ public class MainActivity extends Activity {
 
                 intent.putExtra(EXTRA_LOGIN, loginTxt);
                 startActivity(intent);
+            }
+        });
+
+        // Juste pour les tests pour evite a devoir tout rentrer (long click).
+        loginButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(
+                        MainActivity.this,
+                        LoginMainActivity.class
+                );
+                startActivity(intent);
+
+                return true;
             }
         });
 

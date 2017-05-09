@@ -1,6 +1,8 @@
 package webservice.stream;
 
 import javax.jws.WebService;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,12 +31,11 @@ public class WebServiceStream implements IWebServiceStream {
      * @return string url serveur.
      */
     public String requeteClient(String requete) {
-        List<String> separated = Arrays.asList(requete.split("."));
+        List<String> separated = new ArrayList<>(Arrays.asList(requete.split("\\.")));
 
         String clientID = separated.get(0);
         String action = findAction(separated);
         String musique = findMusique(separated);
-
         return doActionOnServeur(clientID, action, musique);
     }
 
@@ -79,7 +80,6 @@ public class WebServiceStream implements IWebServiceStream {
      * Doit trouver la musique au sein d'une bdd ? fichier ? puis renvoyer le titre.
      *
      * @param requete list de string
-     *
      * @return string titre de la chanson.
      */
     private String findMusique(List<String> requete) {
@@ -92,11 +92,17 @@ public class WebServiceStream implements IWebServiceStream {
      * @param clientID l'id du client.
      * @param action   l'action a realiser.
      * @param musique  la musique a lire.
-     *
      * @return url string.
      */
     private String doActionOnServeur(String clientID, String action, String musique) {
         // appel
-        return "http://127.0.0.1:8090/" + clientID + "/" + musique;
+        String ip = "127.0.0.1";
+        /*try {
+            ip = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }*/
+
+        return "http://" + ip + ":8090/" + clientID + "/" + musique;
     }
 }

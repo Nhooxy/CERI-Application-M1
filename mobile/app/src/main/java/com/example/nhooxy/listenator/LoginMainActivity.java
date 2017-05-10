@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.ksoap2.serialization.SoapObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +23,7 @@ import java.util.UUID;
 public class LoginMainActivity extends CommonLoginActivity {
 
     private List<ResolveInfo> activities;
+    private String RECONNAISSANCE;
 
     /**
      * Au début de l'initialisation de l'app
@@ -77,9 +76,8 @@ public class LoginMainActivity extends CommonLoginActivity {
      */
     public void speakButtonClicked(View v) {
         // todo remove (on enleve la reconnaisance pour accellerr les test
-        String result = "ecouter dazzle";
-        String url = WSListenator(UUID.randomUUID().toString() + "." + result.replaceAll(" ", "."));
-        showAlert(url);
+        RECONNAISSANCE = "ecoute dazzle";
+        WSListenator();
         // todo fin remove
         //startVoiceRecognitionActivity();
     }
@@ -118,8 +116,8 @@ public class LoginMainActivity extends CommonLoginActivity {
             this.wordsList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                     matches));
 
-            String result = matches.get(0);
-            String url = WSListenator(UUID.randomUUID().toString() + "." + result.replaceAll(" ", "."));
+            RECONNAISSANCE = matches.get(0);
+            WSListenator();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -127,18 +125,25 @@ public class LoginMainActivity extends CommonLoginActivity {
 
     /**
      * Permet d'appeler le web service et d'avoir l'url en reponse.
-     * @param reconnaissance
+     *
      * @return
      */
-    public String WSListenator(String reconnaissance) {
+    public String WSListenator() {
+
         try {
-            showAlert("test");
-            return SoapHelper.soap("requeteClient", reconnaissance).toString();
+            String url = this.callServiceSoap(UUID.randomUUID().toString() + "." + RECONNAISSANCE.replaceAll(" ", "."));
+            if (null == url) {
+                showAlert("Probleme lors de la communication avec le service...");
+            }
+            showAlert(" ok ");
+            lecture(url);
+            return url;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        showAlert(" nope ");
 
-        return "Web Service non atteint.";
+        return null;
     }
 
     // lecteuer

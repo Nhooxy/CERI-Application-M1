@@ -4,10 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
+
+import com.example.nhooxy.listenator.ws.BARWebServiceStreamPortBinding;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 public class CommonLoginActivity extends Activity {
 
@@ -18,9 +27,10 @@ public class CommonLoginActivity extends Activity {
     protected ListView wordsList;
 
     protected static String SOAP_URL = "";
-    protected final static String SOAP_ACTION = "WebServiceStreamService";
+
     protected final static String SOAP_METHOD_NAME = "requeteClient";
     protected final static String SOAP_NAMESPACE = "http://stream.webservice/";
+    protected final static String SOAP_ACTION = SOAP_NAMESPACE + SOAP_METHOD_NAME;
 
     protected BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -42,6 +52,7 @@ public class CommonLoginActivity extends Activity {
 
     /**
      * Permet d'afficher une alerte avec la string passe en parametre.
+     *
      * @param str
      */
     public void showAlert(String str) {
@@ -56,5 +67,21 @@ public class CommonLoginActivity extends Activity {
                     }
                 })
                 .show();
+    }
+
+    public String callServiceSoap(final String param) {
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        BARWebServiceStreamPortBinding service = new BARWebServiceStreamPortBinding(SOAP_URL);
+
+        try {
+             return service.requeteClient(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

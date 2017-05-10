@@ -1,6 +1,6 @@
-module ServeurEsclave {
+module MetaServeur {
 
-    interface MetaServeurPublisher {
+    interface ClientWS {
         void jouerMusique(string id, string nomMusique);
     };
 };

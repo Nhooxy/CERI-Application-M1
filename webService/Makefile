@@ -16,6 +16,7 @@ WEBINFCLASSDIR=WEB-INF/classes
 GENDIR=generated/
 GENDIRSRC=generated/MetaServeur
 ICEDIR=ice
+LIBDIR=lib
 
 SLICE=slice2java
 JFLAGS=-classpath WEB-INF/classes:./lib/ice-3.6.3.jar
@@ -36,8 +37,15 @@ jexport:
 	export CLASSPATH=$$CLASSPATH:.WEB-INF/classes:./lib/ice-3.6.3.jar
 
 compile:
-	javac $(GENDIRSRC)/*.java -d $(WEBINFCLASSDIR)/
+	javac $(GENDIRSRC)/*.java -d $(WEBINFCLASSDIR)/ $(JFLAGS)
 	javac $(SRCDIR)/*.java -d $(WEBINFCLASSDIR)/ $(JFLAGS)
+	unzip $(LIBDIR)/ice-3.6.3.jar -d $(LIBDIR)
+	rm -rf $(LIBDIR)/META-INF
+	cp -r $(LIBDIR)/* $(WEBINFCLASSDIR)
+	rm $(WEBINFCLASSDIR)/ice-3.6.3.jar
+	mv $(LIBDIR)/ice-3.6.3.jar $(ICEDIR)/ice-3.6.3.jar
+	rm -rf $(LIBDIR)/*
+	mv $(ICEDIR)/ice-3.6.3.jar $(LIBDIR)/ice-3.6.3.jar
 
 generationWS:
 	wsgen -cp $(WEBINFCLASSDIR):$$CLASSPATH -d $(WEBINFCLASSDIR) -wsdl $(CLASSNAME)

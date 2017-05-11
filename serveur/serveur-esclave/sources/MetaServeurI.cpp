@@ -5,6 +5,7 @@ using namespace MetaServeur;
 
 bool serchWithName(string musique) {
     struct dirent *lecture;
+    cout << musique << endl;
     DIR *rep;
     rep = opendir("./bibliotheque");
     while ((lecture = readdir(rep))) {
@@ -15,7 +16,7 @@ bool serchWithName(string musique) {
         }
     }
     closedir(rep);
-
+    cout << "pas trouver musique" << endl;
     return false;
 }
 
@@ -23,21 +24,21 @@ string MetaServeurI::jouerMusique(const string &id, const string &nomMusique, co
     string musiqueString = nomMusique;
     if (serchWithName(musiqueString)) {
         libvlc_instance_t *vlc;
-        const char *url = musiqueString.c_str();
-        const char *sout =
-        "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/file.mp3}";
-        string musiqueM = "./bibliotheque/" + musiqueString;
         const char *media_musique = musiqueString.c_str();
-        url = musiqueM.c_str();
+        string tmp =
+        "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/"+id+"/"+musiqueString+"}";
+        const char *sout = tmp.c_str();
+        string musiqueM = "./bibliotheque/" + musiqueString;
+        const char *cheminFichier = musiqueM.c_str();
 
         vlc = libvlc_new(0, NULL);
-        libvlc_vlm_add_broadcast(vlc, media_musique, url, sout, 0, NULL, true, false);
+        libvlc_vlm_add_broadcast(vlc, media_musique, cheminFichier, sout, 0, NULL, true, false);
         libvlc_vlm_play_media(vlc, media_musique);
 
         return ip;
     }
 
-    return "Pas de musique";
+    return NULL;
 }
 
 /**
@@ -45,7 +46,7 @@ string MetaServeurI::jouerMusique(const string &id, const string &nomMusique, co
  */
 int main(int argc, char *argv[])
 {
-    cout << "entrez votre ip" << endl;
+    cout << "Entrez l'ip du serveur." << endl;
     cin >> ip;
 
     int status = 0;

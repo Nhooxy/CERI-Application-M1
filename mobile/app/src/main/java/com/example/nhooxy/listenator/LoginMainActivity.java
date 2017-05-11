@@ -22,7 +22,6 @@ import java.util.UUID;
 
 public class LoginMainActivity extends CommonLoginActivity {
 
-    private List<ResolveInfo> activities;
     private String RECONNAISSANCE;
 
     /**
@@ -53,7 +52,7 @@ public class LoginMainActivity extends CommonLoginActivity {
 
         // Disable button if no recognition service is present
         PackageManager pm = getPackageManager();
-        activities = pm.queryIntentActivities(
+        List<ResolveInfo> activities = pm.queryIntentActivities(
                 new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH),
                 0
         );
@@ -61,14 +60,6 @@ public class LoginMainActivity extends CommonLoginActivity {
             speakButton.setEnabled(false);
             speakButton.setText(R.string.pasdetranslateur);
         }
-
-        //todo here !
-        // faire reconnaissance
-        //envoyer le string de reconnaissance
-        // activities.toString().replaceAll(" ", ".")
-        //lire le flux avec lecture();
-        //this.lecture(URL_SERVER_STREAM);
-
     }
 
     /**
@@ -88,7 +79,8 @@ public class LoginMainActivity extends CommonLoginActivity {
     public void urlButtonClicked(View v) {
         final EditText urlText = (EditText) findViewById(R.id.editText);
         // pour les tests adresse par defaut.
-        SOAP_URL = urlText.getText().toString().equals("") ? "http://192.168.1.18:8080/WebServiceStream/WebServiceStreamService?wsdl"
+        //SOAP_URL = urlText.getText().toString().equals("") ? "http://192.168.1.18:8080/WebServiceStream/WebServiceStreamService?wsdl"
+        SOAP_URL = urlText.getText().toString().equals("") ? "http://10.120.12.132:8080/WebServiceStream/WebServiceStreamService?wsdl"
                 : "http://" + urlText.getText().toString() + ":8080/WebServiceStream/WebServiceStreamService?wsdl";
         showAlert(SOAP_URL);
     }
@@ -134,65 +126,17 @@ public class LoginMainActivity extends CommonLoginActivity {
             String url = this.callServiceSoap(UUID.randomUUID().toString() + "." + RECONNAISSANCE.replaceAll(" ", "."));
             if (null == url) {
                 showAlert("Probleme lors de la communication avec le service...");
+            } else {
+                showAlert(" ok ");
+                Player player = new Player(getApplicationContext());
+                player.play(url);
+                return url;
             }
-            showAlert(" ok ");
-            lecture(url);
-            return url;
         } catch (Exception e) {
             e.printStackTrace();
         }
         showAlert(" nope ");
 
         return null;
-    }
-
-    // lecteuer
-    public void lecture(String url) {
-        try {
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer = MediaPlayer.create(LoginMainActivity.this, Uri.parse(url));
-            mediaPlayer.start();
-
-//            Button btStart = (Button) findViewById(R.id.start);
-//            Button btStop = (Button) findViewById(R.id.stop);
-//            Button btPause = (Button) findViewById(R.id.pause);
-//
-//            btStart.setOnClickListener(new Button.OnClickListener() {
-//                public void onClick(View v) {
-//                    try {
-//                        mediaPlayer.start();
-//                    } catch (Exception e) {
-//                        texthaut.setText("erreur " + e.getMessage());
-//                    }
-//
-//                }
-//            });
-//
-//            btStop.setOnClickListener(new Button.OnClickListener() {
-//                public void onClick(View v) {
-//                    try {
-//                        mediaPlayer.stop();
-//                        mediaPlayer.prepare();
-//                    } catch (Exception e) {
-//                        texthaut.setText("erreur " + e.getMessage());
-//                    }
-//
-//                }
-//            });
-//
-//            btPause.setOnClickListener(new Button.OnClickListener() {
-//                public void onClick(View v) {
-//                    try {
-//                        mediaPlayer.pause();
-//                    } catch (Exception e) {
-//                        texthaut.setText("erreur " + e.getMessage());
-//                    }
-//
-//                }
-//            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

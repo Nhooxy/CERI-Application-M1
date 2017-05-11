@@ -69,6 +69,7 @@ public class WebServiceStream implements IWebServiceStream {
         action.add("lire");
         action.add("entendre");
         action.add("ecouté");
+        action.add("play");
         action.add("pause");
         action.add("stop");
         action.add("arreter");
@@ -97,7 +98,7 @@ public class WebServiceStream implements IWebServiceStream {
      */
     private String doActionOnServeur(String clientID, String action, String musique) {
         // appel
-        String ip = "127.0.0.1";
+        String ip = null;
         /*try {
             ip = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
@@ -106,16 +107,18 @@ public class WebServiceStream implements IWebServiceStream {
 
         Ice.Communicator ic = null;
         try {
-            String[] args = null;
+            String[] args = new String[]{};
             ic = Ice.Util.initialize(args);
             Ice.ObjectPrx base = ic.stringToProxy("SimpleBibliotheque:default -p 10000");
             ClientWSPrx manager = ClientWSPrxHelper.checkedCast(base);
             ip = manager.jouerMusique(clientID, musique);
 
+        } catch (Ice.Exception e) {
+            e.printStackTrace();
         } catch (java.lang.Exception e) {
             e.printStackTrace();
         }
 
-        return "http://" + ip + ":8090/" + clientID + "/" + musique;
+        return null != ip ? "http://" + ip + ":8090/" + clientID + "/" + musique : null;
     }
 }

@@ -26,7 +26,12 @@ string ip;
 
 class MetaServeurI : public ClientWS {
 public:
+    string media_name;
+    libvlc_instance_t *vlc;
+
     virtual string jouerMusique(const string &id, const string &nomMusique, const Ice::Current &);
+    virtual bool serchWithName(const string &musique, const Ice::Current &);
+    virtual void stopStreaming(const Ice::Current &);
 };
 
 #endif

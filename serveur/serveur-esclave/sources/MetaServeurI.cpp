@@ -3,7 +3,26 @@
 using namespace std;
 using namespace MetaServeur;
 
-bool serchWithName(string musique) {
+int port = 8090;
+
+bool MetaServeurI::serchWithName(const string &musique, const Ice::Current &) {
+    struct dirent *lecture;
+    cout << musique << endl;
+    DIR *rep;
+    rep = opendir("./bibliotheque");
+    while ((lecture = readdir(rep))) {
+        string tmp = lecture->d_name;
+        if (tmp != musique) {
+            closedir(rep);
+            return true;
+        }
+    }
+    closedir(rep);
+    cout << "pas trouver musique" << endl;
+    return false;
+}
+
+bool serchWithNameLocal(string musique) {
     struct dirent *lecture;
     cout << musique << endl;
     DIR *rep;
@@ -21,14 +40,14 @@ bool serchWithName(string musique) {
 }
 
 string MetaServeurI::jouerMusique(const string &id, const string &nomMusique, const Ice::Current &) {
-    string musiqueString = nomMusique;
-    if (serchWithName(musiqueString)) {
+    media_name = nomMusique;
+    if (serchWithNameLocal(media_name)) {
         libvlc_instance_t *vlc;
-        const char *media_musique = musiqueString.c_str();
+        const char *media_musique = media_name.c_str();
         string tmp =
-        "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/"+id+"/"+musiqueString+"}";
+        "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/"+id+"/"+media_name+"}";
         const char *sout = tmp.c_str();
-        string musiqueM = "./bibliotheque/" + musiqueString;
+        string musiqueM = "./bibliotheque/" + media_name;
         const char *cheminFichier = musiqueM.c_str();
 
         vlc = libvlc_new(0, NULL);
@@ -39,6 +58,12 @@ string MetaServeurI::jouerMusique(const string &id, const string &nomMusique, co
     }
 
     return NULL;
+}
+
+void MetaServeurI::stopStreaming(const Ice::Current &) {
+    libvlc_vlm_stop_media(vlc, media_name.c_str());
+    libvlc_release(vlc);
+    cout << "Stop streaming" << media_name << endl;
 }
 
 /**

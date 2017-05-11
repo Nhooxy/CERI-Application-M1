@@ -30,7 +30,6 @@ public class CommonLoginActivity extends Activity {
 
     protected final static String SOAP_METHOD_NAME = "requeteClient";
     protected final static String SOAP_NAMESPACE = "http://stream.webservice/";
-    protected final static String SOAP_ACTION = SOAP_NAMESPACE + SOAP_METHOD_NAME;
 
     protected BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

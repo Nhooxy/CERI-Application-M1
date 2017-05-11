@@ -85,7 +85,24 @@ public class WebServiceStream implements IWebServiceStream {
      * @return string titre de la chanson.
      */
     private String findMusique(List<String> requete) {
-        return "dazzle.mp3";
+        Ice.Communicator ic = null;
+        String musique = "california";
+        try {
+            String[] args = new String[]{};
+            ic = Ice.Util.initialize(args);
+            Ice.ObjectPrx base = ic.stringToProxy("SimpleBibliotheque:default -p 10000");
+            ClientWSPrx manager = ClientWSPrxHelper.checkedCast(base);
+            for (String aRequete : requete) {
+                if (!manager.serchWithName(aRequete)) {
+                    musique = aRequete;
+                }
+            }
+        } catch (Ice.Exception e) {
+            e.printStackTrace();
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
+        }
+        return musique + ".mp3";
     }
 
     /**
@@ -111,7 +128,14 @@ public class WebServiceStream implements IWebServiceStream {
             ic = Ice.Util.initialize(args);
             Ice.ObjectPrx base = ic.stringToProxy("SimpleBibliotheque:default -p 10000");
             ClientWSPrx manager = ClientWSPrxHelper.checkedCast(base);
-            ip = manager.jouerMusique(clientID, musique);
+            switch (action) {
+                case "stop":
+                    manager.stopStreaming();
+                    break;
+                default:
+                    ip = manager.jouerMusique(clientID, musique);
+                    break;
+            }
 
         } catch (Ice.Exception e) {
             e.printStackTrace();

@@ -66,11 +66,7 @@ public class LoginMainActivity extends CommonLoginActivity {
      * Handle the action of the button being clicked
      */
     public void speakButtonClicked(View v) {
-        // todo remove (on enleve la reconnaisance pour accellerr les test
-        RECONNAISSANCE = "ecoute dazzle";
-        WSListenator();
-        // todo fin remove
-        //startVoiceRecognitionActivity();
+        startVoiceRecognitionActivity();
     }
 
     /**
@@ -127,7 +123,7 @@ public class LoginMainActivity extends CommonLoginActivity {
             if (null == url) {
                 showAlert("Probleme lors de la communication avec le service...");
             } else {
-                showAlert(" ok ");
+                showAlert(" Veuillez patienter ");
                 Player player = new Player(getApplicationContext());
                 player.play(url);
                 return url;
@@ -135,7 +131,7 @@ public class LoginMainActivity extends CommonLoginActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        showAlert(" nope ");
+        showAlert(" Probleme lors de la communication avec le service... ");
 
         return null;
     }

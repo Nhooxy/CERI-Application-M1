@@ -4,8 +4,6 @@
 #include <Ice/Ice.h>
 #include <IceUtil/IceUtil.h>
 #include <IceStorm/IceStorm.h>
-#include "../generated/ServeurEsclave.h"
-#include "../generated/Client.h"
 #include <memory>
 #include <fstream>
 #include <vector>
@@ -15,13 +13,20 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <pthread.h>
+#include <string.h>
+#include "../generated/MetaServeur.h"
 
 using namespace std;
-using namespace ServeurEsclave;
+using namespace MetaServeur;
 
-class MetaServeurI : public MetaServeurPublisher {
+/**
+ * mon ip a entrer
+ */
+string ip;
+
+class MetaServeurI : public ClientWS {
 public:
-    virtual void jouerMusique(const string &id, const string &nomMusique, const Ice::Current &);
+    virtual string jouerMusique(const string &id, const string &nomMusique, const Ice::Current &);
 };
 
 #endif

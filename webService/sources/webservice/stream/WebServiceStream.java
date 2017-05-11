@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Ice.*;
+import MetaServeur.*;
+
 @WebService(name = "WebServiceStream")
 public class WebServiceStream implements IWebServiceStream {
 
@@ -100,6 +103,18 @@ public class WebServiceStream implements IWebServiceStream {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }*/
+
+        Ice.Communicator ic = null;
+        try {
+            String[] args = null;
+            ic = Ice.Util.initialize(args);
+            Ice.ObjectPrx base = ic.stringToProxy("SimpleBibliotheque:default -p 10000");
+            ClientWSPrx manager = ClientWSPrxHelper.checkedCast(base);
+            ip = manager.jouerMusique(clientID, musique);
+
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
+        }
 
         return "http://" + ip + ":8090/" + clientID + "/" + musique;
     }

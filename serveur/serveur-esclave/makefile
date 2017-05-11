@@ -35,9 +35,7 @@ EXEC=ServeurEsclave.run
 all: generate $(EXEC)
 
 generate:
-	$(SLICE) $(OUTPUTICE) $(ICEDIR)/Client.ice
 	$(SLICE) $(OUTPUTICE) $(ICEDIR)/MetaServeur.ice
-	$(SLICE) $(OUTPUTICE) $(ICEDIR)/ServeurEsclave.ice
 
 $(EXEC): $(OBJSRC) $(OBJGEN)
 	$(CC) -o $@ $^ $(CFLAGS)

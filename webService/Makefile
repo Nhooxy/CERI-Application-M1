@@ -12,38 +12,36 @@ CLASSNAME=webservice.stream.WebServiceStream
 SERVICE_NAME=WebServiceStream
 
 SRCDIR=sources/webservice/stream
-TMPDIR=tmp
 WEBINFCLASSDIR=WEB-INF/classes
-GENDIR=generated/MetaServeur
+GENDIR=generated/
+GENDIRSRC=generated/MetaServeur
 ICEDIR=ice
 
 SLICE=slice2java
-JFLAGS=-classpath classes:./lib/jl1.0.1.jar
+JFLAGS=-classpath WEB-INF/classes:./lib/ice-3.6.3.jar
 
-all: precompile generateICE compile generationWS clean
+all: precompile generateICE compile generationWS
 
 precompile:
-	rm -rf $(TMPDIR)
-	mkdir $(TMPDIR)
 	rm -rf WEB-INF
 	mkdir -p WEB-INF/classes
+	rm -rf $(GENDIR)/*
 
-generateICE:
+generateICE: jexport
 	$(SLICE) --output-dir $(GENDIR) $(ICEDIR)/MetaServeur.ice
 
-compile:
-	javac $(SRCDIR)/*.java -d $(TMPDIR)/
-	javac $(GENDIR)/*.java -d $(TMPDIR)/
-	javac -classpath classes:./ice-3.6.3.jar Client.java classes/generer/Bibliotheque/*.java
+jexport:
+	echo "si l'export auto ne fonctionne pas, le faire manuellement."
+	echo "CLASSPATH=$CLASSPATH:.WEB-INF/classes:./lib/ice-3.6.3.jar"
+	export CLASSPATH=$$CLASSPATH:.WEB-INF/classes:./lib/ice-3.6.3.jar
 
+compile:
+	javac $(GENDIRSRC)/*.java -d $(WEBINFCLASSDIR)/
+	javac $(SRCDIR)/*.java -d $(WEBINFCLASSDIR)/ $(JFLAGS)
 
 generationWS:
-	cp -r $(TMPDIR)/* WEB-INF/classes/
 	wsgen -cp $(WEBINFCLASSDIR):$$CLASSPATH -d $(WEBINFCLASSDIR) -wsdl $(CLASSNAME)
 	jar cvf $(SERVICE_NAME).war WEB-INF
-
-clean:
-	rm -rf $(TMPDIR)
 
 startGlassfish:
 	~/glassfish4/bin/asadmin start-domain

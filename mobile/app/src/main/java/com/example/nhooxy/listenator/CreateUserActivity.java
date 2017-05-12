@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 /**
  * Ecran de création de compte.
+ * todo.
  */
 public class CreateUserActivity extends Activity {
 

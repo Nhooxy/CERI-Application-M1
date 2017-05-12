@@ -4,6 +4,8 @@ import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Ice.*;
 import MetaServeur.*;
@@ -34,48 +36,21 @@ public class WebServiceStream implements IWebServiceStream {
     public String requeteClient(String requete) {
         List<String> separated = new ArrayList<>(Arrays.asList(requete.split("\\.")));
 
-        String clientID = separated.get(0);
-        String action = findAction(separated);
-        String musique = findMusique(separated);
-        return doActionOnServeur(clientID, action, musique);
-    }
-
-    /**
-     * Permet de trouver l'action à réaliser.
-     *
-     * @param requete liste des mot envoyer par le client.
-     * @return string action a faire.
-     */
-    private String findAction(List<String> requete) {
-        List<String> action = giveAction();
-        for (String wordAction : requete) {
-            if (action.contains(wordAction)) {
-
-                return wordAction;
+        for (String wordAction : separated) {
+            Pattern patternPlay = Pattern.compile(Commande.PLAY.getRegex(), Pattern.CASE_INSENSITIVE);
+            Matcher matcherPlay = patternPlay.matcher(wordAction);
+            Pattern patternStop = Pattern.compile(Commande.STOP.getRegex(), Pattern.CASE_INSENSITIVE);
+            Matcher matcherStop = patternStop.matcher(wordAction);
+            if (matcherPlay.matches()) {
+                return doActionOnServeur(separated.get(0), findMusique(separated));
+            }
+            if (matcherStop.matches()) {
+                doActionStop();
+                return "stop";
             }
         }
 
-        return "";
-    }
-
-    /**
-     * Renvoie les actions disponible par le serveur.
-     *
-     * @return list string.
-     */
-    private List<String> giveAction() {
-        List<String> action = new ArrayList<>();
-        action.add("ecouter");
-        action.add("lire");
-        action.add("entendre");
-        action.add("ecouté");
-        action.add("play");
-        action.add("pause");
-        action.add("stop");
-        action.add("arreter");
-        action.add("arreté");
-
-        return action;
+        return null;
     }
 
     /**
@@ -93,7 +68,7 @@ public class WebServiceStream implements IWebServiceStream {
             Ice.ObjectPrx base = ic.stringToProxy("SimpleBibliotheque:default -p 10000");
             ClientWSPrx manager = ClientWSPrxHelper.checkedCast(base);
             for (String aRequete : requete) {
-                if (!manager.serchWithName(aRequete)) {
+                if (manager.serchWithName(aRequete)) {
                     musique = aRequete;
                 }
             }
@@ -102,47 +77,49 @@ public class WebServiceStream implements IWebServiceStream {
         } catch (java.lang.Exception e) {
             e.printStackTrace();
         }
-        return musique + ".mp3";
+        return musique;
     }
 
     /**
      * Appel avec ICE sur le meta serveur afin de lancer le stream, renvoie l'url du stream.
      *
      * @param clientID l'id du client.
-     * @param action   l'action a realiser.
      * @param musique  la musique a lire.
      * @return url string.
      */
-    private String doActionOnServeur(String clientID, String action, String musique) {
-        // appel
+    private String doActionOnServeur(String clientID, String musique) {
         String ip = null;
-        /*try {
-            ip = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }*/
-
         Ice.Communicator ic = null;
         try {
             String[] args = new String[]{};
             ic = Ice.Util.initialize(args);
             Ice.ObjectPrx base = ic.stringToProxy("SimpleBibliotheque:default -p 10000");
             ClientWSPrx manager = ClientWSPrxHelper.checkedCast(base);
-            switch (action) {
-                case "stop":
-                    manager.stopStreaming();
-                    break;
-                default:
-                    ip = manager.jouerMusique(clientID, musique);
-                    break;
-            }
-
+            ip = manager.jouerMusique(clientID, musique);
         } catch (Ice.Exception e) {
             e.printStackTrace();
         } catch (java.lang.Exception e) {
             e.printStackTrace();
         }
 
-        return null != ip ? "http://" + ip + ":8090/" + clientID + "/" + musique : null;
+        return null != ip ? "http://" + ip + ":8090/" + clientID + "/" + musique + ".mp3" : null;
+    }
+
+    /**
+     * Appel avec ICE sur le meta serveur afin de stopper le stream.
+     */
+    private void doActionStop() {
+        Ice.Communicator ic = null;
+        try {
+            String[] args = new String[]{};
+            ic = Ice.Util.initialize(args);
+            Ice.ObjectPrx base = ic.stringToProxy("SimpleBibliotheque:default -p 10000");
+            ClientWSPrx manager = ClientWSPrxHelper.checkedCast(base);
+            manager.stopStreaming();
+        } catch (Ice.Exception e) {
+            e.printStackTrace();
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
+        }
     }
 }

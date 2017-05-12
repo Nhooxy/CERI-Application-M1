@@ -17,7 +17,8 @@ bool MetaServeurI::serchWithName(const string &musique, const Ice::Current &) {
     rep = opendir("./bibliotheque");
     while ((lecture = readdir(rep))) {
         string tmp = lecture->d_name;
-        if (tmp != musique) {
+
+        if (tmp == musique+".mp3") {
             closedir(rep);
             return true;
         }
@@ -39,7 +40,9 @@ bool serchWithNameLocal(string musique) {
     rep = opendir("./bibliotheque");
     while ((lecture = readdir(rep))) {
         string tmp = lecture->d_name;
-        if (tmp != musique) {
+        if (tmp == musique+".mp3") {
+            cout << "trouver !" << endl;
+
             closedir(rep);
             return true;
         }
@@ -65,9 +68,10 @@ string MetaServeurI::jouerMusique(const string &id, const string &nomMusique, co
                 id +
                 "/" +
                 media_name +
+                ".mp3" +
                 "}";
         const char *sout = tmp.c_str();
-        string musiqueM = "./bibliotheque/" + media_name;
+        string musiqueM = "bibliotheque/" + media_name + ".mp3";
         const char *cheminFichier = musiqueM.c_str();
 
         vlc = libvlc_new(0, NULL);

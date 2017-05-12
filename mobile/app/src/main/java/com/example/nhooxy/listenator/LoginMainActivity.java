@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.BottomNavigationView;
@@ -19,10 +17,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginMainActivity extends CommonLoginActivity {
 
     private String RECONNAISSANCE;
+
+    private Player player;
 
     /**
      * Au début de l'initialisation de l'app
@@ -42,6 +44,8 @@ public class LoginMainActivity extends CommonLoginActivity {
         if (null != intent) {
             loginDisplay.setText(intent.getStringExtra(EXTRA_LOGIN));
         }
+
+        player = new Player(getApplicationContext());
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -63,14 +67,14 @@ public class LoginMainActivity extends CommonLoginActivity {
     }
 
     /**
-     * Handle the action of the button being clicked
+     * Quand on presse le bouton "record" pour la reconnaissance vocal.
      */
     public void speakButtonClicked(View v) {
         startVoiceRecognitionActivity();
     }
 
     /**
-     * Handle the action of the button being clicked
+     * Quand on click sur le bouton pour entrer 'url du WS.
      */
     public void urlButtonClicked(View v) {
         final EditText urlText = (EditText) findViewById(R.id.editText);
@@ -82,7 +86,7 @@ public class LoginMainActivity extends CommonLoginActivity {
     }
 
     /**
-     * Fire an intent to start the voice recognition activity.
+     * Permet de demarrer le reconnaisance vocal.
      */
     private void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -93,7 +97,7 @@ public class LoginMainActivity extends CommonLoginActivity {
     }
 
     /**
-     * Handle the results from the voice recognition activity.
+     * Permet d'analyser la reconnaisance vocal une fois qu'elle est faites.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -117,14 +121,24 @@ public class LoginMainActivity extends CommonLoginActivity {
      * @return
      */
     public String WSListenator() {
-
+        RECONNAISSANCE = RECONNAISSANCE.toLowerCase();
+        Pattern patternPause = Pattern.compile(Commande.PAUSE.getRegex(), Pattern.CASE_INSENSITIVE);
+        Matcher matcherPause = patternPause.matcher(RECONNAISSANCE);
+        Pattern patternStop = Pattern.compile(Commande.STOP.getRegex(), Pattern.CASE_INSENSITIVE);
+        Matcher matcherStop = patternStop.matcher(RECONNAISSANCE);
+        if (matcherPause.matches()) {
+            player.pause();
+        }
+        if (matcherStop.matches()) {
+            player.stop();
+            String stop = this.callServiceSoap(UUID.randomUUID().toString() + ".stop");
+            showAlert(stop);
+            return stop;
+        }
         try {
             String url = this.callServiceSoap(UUID.randomUUID().toString() + "." + RECONNAISSANCE.replaceAll(" ", "."));
-            if (null == url) {
-                showAlert("Probleme lors de la communication avec le service...");
-            } else {
+            if (null != url) {
                 showAlert(" Veuillez patienter ");
-                Player player = new Player(getApplicationContext());
                 player.play(url);
                 return url;
             }

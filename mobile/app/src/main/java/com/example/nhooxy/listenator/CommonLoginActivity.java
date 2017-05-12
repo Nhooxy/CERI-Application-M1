@@ -3,33 +3,22 @@ package com.example.nhooxy.listenator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.media.MediaPlayer;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.nhooxy.listenator.ws.BARWebServiceStreamPortBinding;
 
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
-
 public class CommonLoginActivity extends Activity {
 
     protected final String EXTRA_LOGIN = "user_login";
 
-    protected MediaPlayer mediaPlayer;
     protected static final int REQUEST_CODE = 1234;
     protected ListView wordsList;
 
     protected static String SOAP_URL = "";
-
-    protected final static String SOAP_METHOD_NAME = "requeteClient";
-    protected final static String SOAP_NAMESPACE = "http://stream.webservice/";
 
     protected BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -68,6 +57,11 @@ public class CommonLoginActivity extends Activity {
                 .show();
     }
 
+    /**
+     * Permet d'appeller le web service WSListenator. (précisement.)
+     * @param param
+     * @return
+     */
     public String callServiceSoap(final String param) {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

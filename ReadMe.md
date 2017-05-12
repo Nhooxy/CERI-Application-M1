@@ -12,17 +12,16 @@ make : compiler le tout.
 make run : démarre l'application concernée.
 
 (
-1 : make run dans configIceBox
+1 : make dans serveur/serveur-esclave
 
-2 : make dans serveur/meta-serveur
+2 : make run dans serveur/serveur-esclave
 
-3 : make run dans serveur/meta-serveur
+3 : make dans webService
 
-4 : make dans serveur/serveur-esclave
+4 : demarrer glassfish
 
-5 : make run dans serveur/serveur-esclave
+5 : make deploy
 
-6 : make dans client
+6 : Android studio, lancer application mobile dedans.
 
-7 : make run dans client
 )

@@ -5,6 +5,11 @@ using namespace MetaServeur;
 
 int port = 8090;
 
+/**
+ * Permet de chercher le nom du fichier musical via ICE.
+ * @param musique
+ * @return
+ */
 bool MetaServeurI::serchWithName(const string &musique, const Ice::Current &) {
     struct dirent *lecture;
     cout << musique << endl;
@@ -22,6 +27,11 @@ bool MetaServeurI::serchWithName(const string &musique, const Ice::Current &) {
     return false;
 }
 
+/**
+ * Permet de chercher le nom d'une musique dans le repertoire local.
+ * @param musique
+ * @return
+ */
 bool serchWithNameLocal(string musique) {
     struct dirent *lecture;
     cout << musique << endl;
@@ -39,13 +49,23 @@ bool serchWithNameLocal(string musique) {
     return false;
 }
 
+/**
+ * Permet de streamer la musique.
+ * @param id
+ * @param nomMusique
+ * @return
+ */
 string MetaServeurI::jouerMusique(const string &id, const string &nomMusique, const Ice::Current &) {
     media_name = nomMusique;
     if (serchWithNameLocal(media_name)) {
         libvlc_instance_t *vlc;
         const char *media_musique = media_name.c_str();
         string tmp =
-        "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/"+id+"/"+media_name+"}";
+                "#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8090/" +
+                id +
+                "/" +
+                media_name +
+                "}";
         const char *sout = tmp.c_str();
         string musiqueM = "./bibliotheque/" + media_name;
         const char *cheminFichier = musiqueM.c_str();
@@ -60,6 +80,9 @@ string MetaServeurI::jouerMusique(const string &id, const string &nomMusique, co
     return NULL;
 }
 
+/**
+ * Permet d'arreter le streaming.
+ */
 void MetaServeurI::stopStreaming(const Ice::Current &) {
     libvlc_vlm_stop_media(vlc, media_name.c_str());
     libvlc_release(vlc);
@@ -69,8 +92,7 @@ void MetaServeurI::stopStreaming(const Ice::Current &) {
 /**
  * Méthode main ud serveur, permet de lancer la communication.
  */
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     cout << "Entrez l'ip du serveur." << endl;
     cin >> ip;
 
@@ -78,7 +100,7 @@ int main(int argc, char *argv[])
     Ice::CommunicatorPtr ic;
     ic = Ice::initialize(argc, argv);
     Ice::ObjectAdapterPtr adapter =
-     ic->createObjectAdapterWithEndpoints("MetaServeurAdapter", "default -p 10000");
+            ic->createObjectAdapterWithEndpoints("MetaServeurAdapter", "default -p 10000");
     Ice::ObjectPtr object = new MetaServeurI;
     adapter->add(object, ic->stringToIdentity("SimpleBibliotheque"));
     adapter->activate();

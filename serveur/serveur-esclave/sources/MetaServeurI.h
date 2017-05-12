@@ -24,13 +24,32 @@ using namespace MetaServeur;
  */
 string ip;
 
+/**
+ * Classe MetaServeur
+ */
 class MetaServeurI : public ClientWS {
 public:
     string media_name;
     libvlc_instance_t *vlc;
 
+    /**
+     * Permet de streamer la musique.
+     * @param id
+     * @param nomMusique
+     * @return
+     */
     virtual string jouerMusique(const string &id, const string &nomMusique, const Ice::Current &);
+
+    /**
+     * Permet de chercher le nom du fichier musical via ICE.
+     * @param musique
+     * @return
+     */
     virtual bool serchWithName(const string &musique, const Ice::Current &);
+
+    /**
+     * Permet d'arreter le streaming.
+     */
     virtual void stopStreaming(const Ice::Current &);
 };
 

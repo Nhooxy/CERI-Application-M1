@@ -1,31 +1,6 @@
 # Pierre PEREZ tp Application.
 
-## Résumer du travail effectués
-
-Les difficultés que j'ai pus rencontrer durant le projet sont liés principalement à ICE,
-En effet, la configuration de IceBox, m'a pausé problème pendant quelques heures.
-De plus mettre en place IceStorm n'a pas était aisé.
-
-Aussi j'avais des ambitions importantes pour ce porjet tel que faire communiqué mon méta serveur
-via IceGrid pour les serveurs esclaves.
-
-Cela m'a fait m'égarer sur de nombreux point... Au final, IceGrid n'est pas implémenté...
-Le méta serveur communique avec un serveur esclave via iceStorm.
-Et je n'ai pas réussi a faire en sorte qu'il y est plusierus serveur esclave distribué via 
-Ice grid comme je le souhaité.
-
-Le client mobile sous android n'a pas été finalisé. Celui-ci peux lire une musique en streaming
-mais ou l'url et le nom de la musique est écrite en dure... donc il n'apporte que peu 
-d'interrer pour le moment.
-
-Ensuite le client Desktop pour les tests est non fini, en effet, j'ai pas réussi à faire fonctionner 
-convenablement le subscriber, globalement il me manque un peu de temps pour finir.
-Le client démarre mais le stream ne fonctionne pas. il faudrai que j'ajsute les méthodes que 
-j'avais rélasier au tp du premier semestre.
-
-Le coté réseaux sociaux n'est pas implémenter non plus. J'avais pour idée de réaliser des 
-compte utilisateur avec leur playlist personnalisé qu'il pouvait partager sur un 'mur'.
-Malheureusement, j'ai manqué de temps.
+## voir le rapport.pdf
 
 ## Pour tester l'application
 
